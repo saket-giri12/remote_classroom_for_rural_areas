@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunrise Rural College - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js CDN for attendance graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="college-name">Sunrise Rural College</div>
+        <h1>Dashboard</h1>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#fees">Fees Payment</a></li>
+                <li><a href="#lectures">Recorded Lectures</a></li>
+                <li><a href="#live">Live Classes</a></li>
+                <li><a href="#exams">Exam Time Table</a></li>
+                <li><a href="#attendance">Attendance</a></li>
+                <li><a href="#bus">Bus Facility</a></li>
+                <li><a href="#notes">Subject Notes</a></li>
+                <li><a href="faculty_attendance.html">Faculty Attendance</a></li>
+                <li><a href="#" id="chatbotToggle">Chatbot</a></li>
+
+
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Fees Payment Section -->
+            <section id="fees" class="section">
+                <h2>Fees Payment</h2>
+                <form id="paymentForm">
+                    <label for="amount">Amount (INR):</label>
+                    <input type="number" id="amount" required>
+                    <label for="method">Payment Method:</label>
+                    <select id="method">
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="upi">UPI</option>
+                        <option value="netbanking">Net Banking</option>
+                    </select>
+                    <button type="submit">Pay Now</button>
+                </form>
+                <div id="paymentMsg" class="msg"></div>
+            </section>
+
+            <!-- Recorded Lectures Section -->
+            <section id="lectures" class="section">
+                <h2>Recorded Lectures</h2>
+                <ul class="lecture-list">
+                    <li>Mathematics - Lecture 1: <a href="#" onclick="downloadLecture('math1')">Download</a></li>
+                    <li>Physics - Lecture 2: <a href="#" onclick="downloadLecture('phys2')">Download</a></li>
+                    <li>English - Lecture 3: <a href="#" onclick="downloadLecture('eng3')">Download</a></li>
+                </ul>
+            </section>
+
+            <!-- Live Classes Section -->
+            <section id="live" class="section">
+                <h2>Live Classes</h2>
+                <div class="live-class">
+                    <h3>Mathematics (10:00 AM - 11:00 AM)</h3>
+                    <button onclick="joinLive('math')">Join Now</button>
+                </div>
+                <div class="live-class">
+                    <h3>Physics (2:00 PM - 3:00 PM)</h3>
+                    <button onclick="joinLive('phys')">Join Now</button>
+                </div>
+            </section>
+
+            <!-- Exam Time Table Section -->
+            <section id="exams" class="section">
+                <h2>Exam Time Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Room</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mathematics</td>
+                            <td>2023-12-15</td>
+                            <td>10:00 AM</td>
+                            <td>A-101</td>
+                        </tr>
+                        <tr>
+                            <td>Physics</td>
+                            <td>2023-12-16</td>
+                            <td>2:00 PM</td>
+                            <td>B-202</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Attendance Section (Updated: Subject-Specific) -->
+            <section id="attendance" class="section">
+                <h2>Subject Attendance</h2>
+                
+                <!-- Role Toggle (Demo: Switch between Faculty/Student View) -->
+                <button id="toggleRole" class="btn">Switch to Faculty Mode</button>
+                <div id="roleIndicator" class="role-info">Current: Student View</div>
+                
+                <!-- Faculty Upload Form (Hidden by Default) -->
+                <div id="facultyUpload" style="display: none;">
+                    <h3>Upload Attendance (Faculty)</h3>
+                    <form id="attendanceForm">
+                        <div class="form-group">
+                            <label for="subject">Subject:</label>
+                            <select id="subject" required>
+                                <option value="">Select Subject</option>
+                                <option value="TOC">TOC (Theory of Computation)</option>
+                                <option value="DBMS">DBMS (Database Management Systems)</option>
+                                <option value="IWT">IWT (Internet Web Technology)</option>
+                                <option value="DA">DA (Data Analytics)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentName">Student Name:</label>
+                            <input type="text" id="studentName" required placeholder="e.g., John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <select id="status" required>
+                                <option value="">Select Status</option>
+                                <option value="present">Present</option>
+                                <option value="absent">Absent</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Upload Attendance</button>
+                    </form>
+                    <div id="uploadMsg" class="msg"></div>
+                </div>
+
+                <!-- Student View -->
+                <div id="studentView">
+                    <h3>View Attendance (Student)</h3>
+                    <div class="form-group">
+                        <label for="viewStudentName">Enter Your Name to View:</label>
+                        <input type="text" id="viewStudentName" placeholder="e.g., John Doe" value="John Doe">
+                        <button id="loadAttendance" class="btn">Load My Attendance</button>
+                    </div>
+                    
+                    <!-- Subject-Wise Tables -->
+                    <div id="subjectsAttendance">
+                        <h4>TOC Attendance</h4>
+                        <table id="tocTable">
+                            <thead>
+                                <tr><th>Date</th><th>Status</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        
+                        <h4>DBMS Attendance</h4>
+                        <table id="dbmsTable">
+                            <thead>
+                                <tr><th>Date</th><th>Status</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        
+                        <h4>IWT Attendance</h4>
+                        <table id="iwtTable">
+                            <thead>
+                                <tr><th>Date</th><th>Status</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        
+                        <h4>DA Attendance</h4>
+                        <table id="daTable">
+                            <thead>
+                                <tr><th>Date</th><th>Status</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Overall Trend Graph -->
+                    <h3>Overall Attendance Trend (All Subjects)</h3>
+                    <canvas id="attendanceChart" width="400" height="200"></canvas>
+                </div>
+            </section>
+
+            <!-- Bus Facility Section -->
+            <section id="bus" class="section">
+                <h2>Bus Facility</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Route</th>
+                            <th>Departure Time</th>
+                            <th>Stops</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Main Campus to City</td>
+                            <td>8:00 AM</td>
+                            <td>5 stops</td>
+                        </tr>
+                        <tr>
+                            <td>City to Campus</td>
+                            <td>5:00 PM</td>
+                            <td>4 stops</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Notes Availability Section -->
+            <section id="notes" class="section">
+                <h2>Subject Notes</h2>
+                <ul class="notes-list">
+                    <li>Mathematics Notes: <a href="#" onclick="downloadNotes('math-notes')">Download PDF</a></li>
+                    <li>Physics Notes: <a href="#" onclick="downloadNotes('phys-notes')">Download PDF</a></li>
+                    <li>English Notes: <a href="#" onclick="downloadNotes('eng-notes')">Download PDF</a></li>
+                </ul>
+            </section>
+            <!-- AI Chatbot (Initially Hidden) -->
+<div id="chatbot-container" class="chatbot-hidden">
+    <div id="chatbot-header">
+        AI FAQ Bot
+        <span id="closeChatbot" style="float:right; cursor:pointer; font-weight:bold;">&times;</span>
+    </div>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input-area">
+        <input type="text" id="chatbot-input" placeholder="Ask a question...">
+        <button id="chatbot-send">Send</button>
+    </div>
+</div>
+
+
+
+        </main>
+    </div>
+
+    <script>
+        // Subject-Specific Attendance Data (localStorage) - NEW VERSION
+        let attendanceData = JSON.parse(localStorage.getItem('subjectAttendance')) || [];
+
+        // Save data to localStorage
+        function saveAttendance() {
+            localStorage.setItem('subjectAttendance', JSON.stringify(attendanceData));
+        }
+
+        // Initialize Attendance Feature
+        function initSubjectAttendance() {
+            // Set default student name for demo
+            const viewStudentName = document.getElementById('viewStudentName');
+            if (viewStudentName) {
+                viewStudentName.value = 'John Doe';
+                loadStudentAttendance('John Doe'); // Load demo view initially
+            }
+            createAttendanceChart(); // Overall chart
+        }
+
+        // Toggle Role (Faculty/Student View)
+        let isFacultyMode = false;
+        function setupRoleToggle() {
+            const toggleBtn = document.getElementById('toggleRole');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    isFacultyMode = !isFacultyMode;
+                    const facultyUpload = document.getElementById('facultyUpload');
+                    const studentView = document.getElementById('studentView');
+                    const roleIndicator = document.getElementById('roleIndicator');
+                    const btn = this;
+                    
+                    if (isFacultyMode) {
+                        if (facultyUpload) facultyUpload.style.display = 'block';
+                        if (studentView) studentView.style.display = 'none';
+                        btn.textContent = 'Switch to Student Mode';
+                        if (roleIndicator) roleIndicator.textContent = 'Current: Faculty Mode';
+                    } else {
+                        if (facultyUpload) facultyUpload.style.display = 'none';
+                        if (studentView) studentView.style.display = 'block';
+                        btn.textContent = 'Switch to Faculty Mode';
+                        if (roleIndicator) roleIndicator.textContent = 'Current: Student Mode';
+                    }
+                });
+            }
+        }
+
+        // Faculty Upload Handler
+        function setupUploadHandler() {
+            const form = document.getElementById('attendanceForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const subject = document.getElementById('subject').value;
+                    const studentName = document.getElementById('studentName').value.trim();
+                    const date = document.getElementById('date').value;
+                    const status = document.getElementById('status').value;
+                    const msg = document.getElementById('uploadMsg');
+                    
+                    if (!subject || !studentName || !date || !status) {
+                        if (msg) msg.innerHTML = '<p class="error">All fields are required.</p>';
+                        return;
+                    }
+                    
+                    // Check duplicate
+                    const existing = attendanceData.find(a => a.subject === subject && a.date === date && a.studentName === studentName);
+                    if (existing) {
+                        if (msg) msg.innerHTML = '<p class="error">Attendance already marked for this student on this date.</p>';
+                        return;
+                    }
+                    
+                    // Add record
+                    attendanceData.push({ subject, date, studentName, status });
+                    saveAttendance();
+                    if (msg) msg.innerHTML = `<p class="success">Attendance uploaded for ${studentName} in ${subject} on ${date}: ${status}</p>`;
+                    this.reset();
+                    createAttendanceChart(); // Update chart
+                });
+            }
+        }
+
+        // Load Attendance for Student (Per Subject Tables)
+        function loadStudentAttendance(studentName) {
+            const subjects = ['TOC', 'DBMS', 'IWT', 'DA'];
+            subjects.forEach(subject => {
+                const filteredData = attendanceData.filter(a => a.subject === subject && a.studentName === studentName);
+                const tableId = `${subject.toLowerCase()}Table`;
+                const tbody = document.getElementById(tableId);
+                if (tbody) {
+                    tbody.innerHTML = '';
+                    
+                    if (filteredData.length === 0) {
+                        const row = tbody.insertRow();
+                        const cell = row.insertCell(0);
+                        cell.colSpan = 2;
+                        cell.textContent = 'No attendance records yet.';
+                        cell.style.textAlign = 'center';
+                        cell.style.color = '#999';
+                    } else {
+                        filteredData.forEach(record => {
+                            const row = tbody.insertRow();
+                            row.insertCell(0).textContent = record.date;
+                            const statusCell = row.insertCell(1);
+                            statusCell.textContent = record.status.charAt(0).toUpperCase() + record.status.slice(1);
+                            statusCell.className = record.status; // Green for present, red for absent
+                        });
+                    }
+                }
+            });
+        }
+
+        // Load Button Handler
+        function setupLoadHandler() {
+            const loadBtn = document.getElementById('loadAttendance');
+            if (loadBtn) {
+                loadBtn.addEventListener('click', function() {
+                    const studentName = document.getElementById('viewStudentName').value.trim();
+                    if (!studentName) {
+                        alert('Please enter a student name.');
+                        return;
+                    }
+                    loadStudentAttendance(studentName);
+                });
+            }
+        }
+
+        // Attendance Chart (Overall Trend)
+        let chartInstance = null; // To destroy old chart
+        function createAttendanceChart() {
+            const canvas = document.getElementById('attendanceChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const months = ['Nov', 'Dec', 'Jan'];
+            const demoPercent = [70, 80, 95]; // Demo; replace with real calc if needed
+            
+            // Destroy old chart
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Overall Attendance % (All Subjects)',
+                        data: demoPercent,
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            max: 100,
+                            ticks: { stepSize: 10 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fees payment handler (demo)
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = document.getElementById('amount').value;
+            const method = document.getElementById('method').value;
+            document.getElementById('paymentMsg').innerHTML = `<p class="success">Payment of ₹${amount} via ${method} successful! (Demo)</p>`;
+            this.reset();
+        });
+
+        // Demo functions for downloads and joins
+        function downloadLecture(file) {
+            alert(`Downloading ${file}.mp4 (Demo: In real app, serve actual file.)`);
+        }
+
+        function joinLive(subject) {
+            alert(`Joining live class for ${subject} (Demo: Redirect to Zoom/WebRTC.)`);
+        }
+
+        function downloadNotes(file) {
+            alert(`Downloading ${file}.pdf (Demo: In real app, serve actual file.)`);
+        }
+
+        // Logout handler (redirect to login)
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';  // Changed to login.html; adjust if needed
+            }
+        });
+
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Initialize everything on load
+        initSubjectAttendance();
+        setupRoleToggle();
+        setupUploadHandler();
+        setupLoadHandler();
+
+        // Chatbot toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotContainer = document.getElementById('chatbot-container');
+    const closeChatbot = document.getElementById('closeChatbot');
+    const messagesContainer = document.getElementById('chatbot-messages');
+    const input = document.getElementById('chatbot-input');
+    const sendBtn = document.getElementById('chatbot-send');
+
+    // FAQ data
+    const faq = {
+        "what is your name?": "I am your AI FAQ bot.",
+        "how to login?": "Use your student or faculty credentials to login.",
+        "how to reset password?": "Click on 'Forgot Password' link and follow instructions.",
+        "how to access dashboard?": "After login, you will be redirected to the dashboard automatically.",
+        "how to view attendance?": "Go to Attendance section, enter your name, and click Load My Attendance.",
+        "how to pay fees?": "Go to Fees Payment section and fill the form to pay your fees."
+    };
+
+    // Toggle chatbot
+    chatbotToggle.addEventListener('click', (e) => {
+        e.preventDefault(); // prevent anchor default
+        chatbotContainer.classList.toggle('chatbot-hidden');
+    });
+
+    // Close chatbot
+    closeChatbot.addEventListener('click', () => {
+        chatbotContainer.classList.add('chatbot-hidden');
+    });
+
+    // Add message function
+    function addMessage(text, sender="bot") {
+        const msgDiv = document.createElement('div');
+        msgDiv.style.marginBottom = "10px";
+        msgDiv.style.textAlign = sender === "bot" ? "left" : "right";
+        msgDiv.innerHTML = `<b>${sender === "bot" ? "Bot" : "You"}:</b> ${text}`;
+        messagesContainer.appendChild(msgDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Send message
+    sendBtn.addEventListener('click', () => {
+        const question = input.value.trim().toLowerCase();
+        if(!question) return;
+        addMessage(input.value, "user");
+        input.value = "";
+        if(faq[question]) {
+            addMessage(faq[question]);
+        } else {
+            addMessage("Sorry, I don't know the answer to that yet.");
+        }
+    });
+
+    // Press Enter to send
+    input.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') sendBtn.click();
+    });
+});
+
+
+    </script>
+</body>
+</html>

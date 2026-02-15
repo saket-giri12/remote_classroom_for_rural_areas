@@ -1,0 +1,332 @@
+/* Previous Login Styles (Kept for consistency if linking back) */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    margin: 100px auto;
+}
+
+.college-name {
+    font-size: 35px;
+    font-weight: bold;
+    color: rgba(43, 201, 196, 0.865);
+    margin-bottom: 10px;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    text-decoration: underline;
+    font-style: italic;
+    font-variant: small-caps;
+    text-transform: capitalize;
+
+}
+.college-name {
+  font-size: 18px;
+  color: rgb(1, 18, 19);
+  transition: 0.3s; /* smooth animation */
+}
+
+.college-name:hover {
+  color: rgb(106, 23, 91);           /* text color change */
+  font-size: 35px;       /* font size badal gaya */
+  font-weight: bolder;     /* bold ho gaya */
+  font-family: 'Courier New', monospace; /* font style badal gaya */
+}
+
+
+h2 {
+    text-align: center;
+    margin-bottom: 50px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"],
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #0056b3;
+}
+
+.forgot-password {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}
+
+.success {
+    color: green;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}
+
+/* New Dashboard Styles */
+.header {
+    background-color: #a0d2eb;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logout-btn {
+    width: auto;
+    padding: 8px 16px;
+    background-color: #ff1d58;
+}
+
+.logout-btn:hover {
+    background-color: #c82333;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: calc(100vh - 100px);
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin: 10px 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px 20px;
+}
+
+.sidebar a:hover {
+    background-color: #007bff;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.section h2,
+.section h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.lecture-list,
+.notes-list {
+    list-style: none;
+    padding: 0;
+}
+
+.lecture-list li,
+.notes-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.live-class {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.live-class button {
+    width: auto;
+    margin-top: 10px;
+    padding: 8px 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.present {
+    color: green;
+    font-weight: bold;
+}
+
+.absent {
+    color: red;
+    font-weight: bold;
+}
+
+.msg {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.msg.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+#attendanceChart {
+    max-width: 100%;
+    margin-top: 20px;
+}
+
+/* Chatbot Styles */
+#chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.chatbot-hidden {
+    display: none;
+
+}
+
+#chatbot-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+#chatbot-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+#chatbot-input-area {
+    display: flex;
+    border-top: 1px solid #ccc;
+}
+
+#chatbot-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+#chatbot-send {
+    padding: 10px;
+    border: none;
+    background-color: #cd568f;
+    color: white;
+    cursor: pointer;
+}
+
+#chatbot-send:hover {
+    background-color: #0c9760;
+}
+
+
+
+
+
+
+
